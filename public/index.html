@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Weather Proxy & Cache Explorer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="app-container">
+    <header class="app-header">
+      <div class="header-content">
+        <div class="logo">
+          <span class="logo-icon">⛅</span>
+          <div>
+            <h1>Weather Proxy</h1>
+            <p class="subtitle">Open-Meteo Proxy con Backend In-Memory Cache (TTL 10m)</p>
+          </div>
+        </div>
+        <div class="cache-bar">
+          <div class="cache-status" id="cacheStats">
+            <span class="pulse-dot"></span>
+            <span>Cache attiva: <strong id="cacheCount">0</strong> città</span>
+          </div>
+          <button id="clearCacheBtn" class="btn btn-secondary btn-sm" title="Svuota la cache in memoria sul backend">
+            🗑️ Svuota Cache Server
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <main class="main-content">
+      <!-- Search Section -->
+      <section class="search-section card">
+        <form id="searchForm" class="search-form">
+          <div class="search-input-wrapper">
+            <span class="search-icon">🔍</span>
+            <input
+              type="text"
+              id="cityInput"
+              placeholder="Cerca una città (es. Milano, Roma, Tokyo, Londra)..."
+              autocomplete="off"
+              required
+            />
+          </div>
+          <button type="submit" id="searchBtn" class="btn btn-primary">
+            Cerca Meteo
+          </button>
+        </form>
+
+        <!-- Favorites pill list -->
+        <div class="favorites-container">
+          <div class="favorites-header">
+            <span class="favorites-title">⭐ Città Preferite:</span>
+            <span id="favoritesEmptyMsg" class="favorites-empty">Nessuna città salvata</span>
+          </div>
+          <div id="favoritesList" class="favorites-list"></div>
+        </div>
+      </section>
+
+      <!-- Status and alerts -->
+      <div id="statusAlert" class="alert-box hidden" role="alert"></div>
+
+      <!-- Loading skeleton -->
+      <div id="loadingIndicator" class="loading-box hidden">
+        <div class="spinner"></div>
+        <p>Interrogazione proxy e recupero dati meteo...</p>
+      </div>
+
+      <!-- Weather Result Display -->
+      <section id="weatherResult" class="weather-result card hidden">
+        <div class="result-header">
+          <div class="location-info">
+            <h2 id="cityName">--</h2>
+            <p id="countryName" class="country-label">--</p>
+            <span id="coordsLabel" class="coords-label">Lat: --, Lon: --</span>
+          </div>
+          <div class="header-actions">
+            <!-- Cache or API Badge -->
+            <div id="sourceBadge" class="source-badge">
+              <span class="badge-icon">⚡</span>
+              <span id="badgeText">Sorgente: --</span>
+            </div>
+            <button id="favoriteToggleBtn" class="btn btn-outline" title="Aggiungi ai preferiti">
+              ⭐ Salva nei Preferiti
+            </button>
+          </div>
+        </div>
+
+        <div class="weather-body">
+          <div class="main-temperature">
+            <div id="weatherEmoji" class="weather-emoji">☀️</div>
+            <div>
+              <div class="temp-row">
+                <span id="tempValue" class="temp-value">--</span>
+                <span class="temp-unit">°C</span>
+              </div>
+              <p id="weatherDesc" class="weather-desc">--</p>
+            </div>
+          </div>
+
+          <div class="weather-metrics-grid">
+            <div class="metric-card">
+              <span class="metric-icon">🌡️</span>
+              <span class="metric-label">Percepita</span>
+              <span id="apparentTempValue" class="metric-value">-- °C</span>
+            </div>
+            <div class="metric-card">
+              <span class="metric-icon">💧</span>
+              <span class="metric-label">Umidità</span>
+              <span id="humidityValue" class="metric-value">-- %</span>
+            </div>
+            <div class="metric-card">
+              <span class="metric-icon">💨</span>
+              <span class="metric-label">Vento</span>
+              <span id="windSpeedValue" class="metric-value">-- km/h</span>
+            </div>
+            <div class="metric-card">
+              <span class="metric-icon">⏱️</span>
+              <span class="metric-label">Tempo Risposta</span>
+              <span id="responseTimeValue" class="metric-value">-- ms</span>
+            </div>
+          </div>
+        </div>
+
+        <footer class="result-footer">
+          <span id="cachedAtLabel">Ultimo aggiornamento: --</span>
+          <span class="ttl-info">TTL Cache: 10 min</span>
+        </footer>
+      </section>
+
+    </main>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
